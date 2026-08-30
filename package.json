@@ -1,0 +1,13 @@
+{
+  "name": "sync-watch-party",
+  "version": "1.0.0",
+  "description": "Watch local .mp4 files in sync with friends across a room. Only playback timestamps travel over the network — never the video file itself.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

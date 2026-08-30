@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reel Room — watch your own files, in sync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="filmstrip"></div>
+
+<!-- LANDING -->
+<main id="landing" class="screen">
+  <div class="marquee">
+    <span class="marquee-eyebrow">NOW SEATING</span>
+    <h1>REEL ROOM</h1>
+    <p class="tagline">Everyone plays the same .mp4 from their own machine. This just keeps every player's clock in lockstep — the file never leaves your computer.</p>
+  </div>
+
+  <div class="ticket-row">
+    <section class="ticket" id="create-panel">
+      <h2>Open a room</h2>
+      <p class="hint">You'll get a code to send around.</p>
+      <label>Your name
+        <input type="text" id="create-name" maxlength="20" placeholder="Projectionist">
+      </label>
+      <button class="btn btn-amber" id="btn-create">Open room</button>
+    </section>
+
+    <div class="perforation" aria-hidden="true"></div>
+
+    <section class="ticket" id="join-panel">
+      <h2>Join a room</h2>
+      <p class="hint">Got a code from the host? Drop it in.</p>
+      <label>Room code
+        <input type="text" id="join-code" maxlength="6" placeholder="4XJ92K" style="text-transform:uppercase">
+      </label>
+      <label>Your name
+        <input type="text" id="join-name" maxlength="20" placeholder="Guest">
+      </label>
+      <button class="btn btn-teal" id="btn-join">Take a seat</button>
+    </section>
+  </div>
+
+  <p class="error" id="landing-error"></p>
+</main>
+
+<!-- ROOM -->
+<main id="room" class="screen hidden">
+  <header class="room-bar">
+    <div class="room-code-block">
+      <span class="label">ROOM</span>
+      <span class="code" id="room-code">------</span>
+      <button class="copy-btn" id="copy-code" title="Copy room code">copy</button>
+    </div>
+    <div class="filename-block">
+      <span class="label">FILE</span>
+      <span class="filename" id="active-filename">no file loaded</span>
+    </div>
+    <div class="sync-status">
+      <span class="dot" id="sync-dot"></span>
+      <span id="sync-text">in sync</span>
+    </div>
+  </header>
+
+  <div class="room-body">
+    <section class="screen-panel">
+      <video id="player" controls preload="metadata"></video>
+      <div class="loader-row">
+        <label class="file-btn">
+          Choose your copy of the .mp4
+          <input type="file" id="file-input" accept="video/mp4,video/*">
+        </label>
+        <button class="btn btn-teal-outline" id="btn-share-p2p" disabled>Share via P2P</button>
+        <span class="loader-hint" id="loader-hint">Everyone needs the same file already on their own computer — pick it locally, nothing uploads. Or load a file, then "Share via P2P" to send it directly to others over WebRTC.</span>
+      </div>
+
+      <div class="torrent-list-wrap hidden" id="torrent-list-wrap">
+        <h4 class="torrent-list-title">Available via P2P</h4>
+        <ul class="torrent-list" id="torrent-list"></ul>
+      </div>
+
+      <div class="torrent-progress hidden" id="torrent-progress">
+        <div class="torrent-progress-bar"><div class="torrent-progress-fill" id="torrent-progress-fill"></div></div>
+        <span id="torrent-progress-text">connecting to peers…</span>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <div class="audience">
+        <h3>In the room</h3>
+        <ul id="user-list"></ul>
+      </div>
+      <div class="chat">
+        <h3>Room chat</h3>
+        <ul id="chat-log"></ul>
+        <form id="chat-form">
+          <input type="text" id="chat-input" maxlength="300" placeholder="Say something…" autocomplete="off">
+          <button type="submit" class="btn btn-amber-outline">Send</button>
+        </form>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="client.js"></script>
+</body>
+</html>
