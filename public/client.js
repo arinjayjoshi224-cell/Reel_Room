@@ -4,6 +4,39 @@ const socket = io();
 
 const $ = (id) => document.getElementById(id);
 
+// ---------- Landing page background music ----------
+const bgMusic = $('bg-music');
+const musicToggle = $('music-toggle');
+bgMusic.volume = 0.35;
+
+function tryPlayMusic() {
+  // Autoplay with sound is blocked by browsers, so start muted (always
+  // allowed) and reveal a toggle for the person to turn sound on.
+  bgMusic.muted = true;
+  bgMusic.play().then(() => {
+    musicToggle.classList.remove('hidden');
+    musicToggle.textContent = '🔇';
+  }).catch(() => {
+    // Even muted autoplay was blocked — wait for any click on the page.
+    musicToggle.classList.remove('hidden');
+    musicToggle.textContent = '🔇';
+    document.body.addEventListener('click', () => bgMusic.play().catch(() => {}), { once: true });
+  });
+}
+tryPlayMusic();
+
+musicToggle.addEventListener('click', () => {
+  bgMusic.muted = !bgMusic.muted;
+  musicToggle.textContent = bgMusic.muted ? '🔇' : '🔊';
+  if (!bgMusic.muted) bgMusic.play().catch(() => {});
+});
+
+function stopLandingMusic() {
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+  musicToggle.classList.add('hidden');
+}
+
 // ---------- Landing ----------
 const landing = $('landing');
 const roomScreen = $('room');
@@ -35,6 +68,7 @@ const player = $('player');
 
 function enterRoom({ roomId: id, isHost: host, selfId: sid, state, fileName, torrents }) {
   roomId = id; isHost = host; selfId = sid;
+  stopLandingMusic();
   landing.classList.add('hidden');
   roomScreen.classList.remove('hidden');
   $('room-code').textContent = roomId;

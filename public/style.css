@@ -155,6 +155,24 @@ input[type=text]:focus{border-color:var(--amber);}
   margin-top:16px;
 }
 
+.music-toggle{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--amber);
+  font-size:18px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.music-toggle:hover{border-color:var(--amber);}
+
 /* ---------- Room ---------- */
 .room-bar{
   display:flex;
