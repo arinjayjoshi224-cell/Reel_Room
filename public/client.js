@@ -26,9 +26,14 @@ function tryPlayMusic() {
 tryPlayMusic();
 
 musicToggle.addEventListener('click', () => {
-  bgMusic.muted = !bgMusic.muted;
-  musicToggle.textContent = bgMusic.muted ? '🔇' : '🔊';
-  if (!bgMusic.muted) bgMusic.play().catch(() => {});
+  if (bgMusic.paused) {
+    bgMusic.muted = false; 
+    bgMusic.play();
+    musicToggle.textContent = '🔊';
+  } else {
+    bgMusic.pause();
+    musicToggle.textContent = '🔇';
+  }
 });
 
 function stopLandingMusic() {
